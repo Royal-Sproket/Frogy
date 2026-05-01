@@ -13,32 +13,6 @@ from PyQt6.QtCore import Qt, QTimer, QPoint
 
 from Xlib import display, X
 
-
-def shatter_window(self, win):
-    x, y, w, h = win["x"], win["y"], win["w"], win["h"]
-
-    cols = 8
-    rows = 6
-
-    frag_w = w // cols
-    frag_h = h // rows
-
-    for i in range(cols):
-        for j in range(rows):
-            fx = x + i * frag_w
-            fy = y + j * frag_h
-
-            self.fragments.append({
-                "x": fx,
-                "y": fy,
-                "w": frag_w,
-                "h": frag_h,
-                "vx": random.uniform(-3, 3),
-                "vy": random.uniform(-8, -2),
-                "rot": random.uniform(-5, 5),
-            })
-
-
 def move_window(win_id, x, y, w, h):
     try:
         cmd = [
@@ -328,7 +302,29 @@ class Creature(QWidget):
         if math.hypot(ex - cx, ey - cy) < 15:
             print("Eye poked → exiting")
             QApplication.quit()
-
+    def shatter_window(self, win):
+        x, y, w, h = win["x"], win["y"], win["w"], win["h"]
+    
+        cols = 8
+        rows = 6
+    
+        frag_w = w // cols
+        frag_h = h // rows
+    
+        for i in range(cols):
+            for j in range(rows):
+                fx = x + i * frag_w
+                fy = y + j * frag_h
+    
+                self.fragments.append({
+                    "x": fx,
+                    "y": fy,
+                    "w": frag_w,
+                    "h": frag_h,
+                    "vx": random.uniform(-3, 3),
+                    "vy": random.uniform(-8, -2),
+                    "rot": random.uniform(-5, 5),
+                })
     
 
     # ----------------------------
