@@ -14,6 +14,29 @@ from PyQt6.QtCore import Qt, QTimer, QPoint
 from Xlib import display, X
 
 
+def shatter_window(self, win):
+    x, y, w, h = win["x"], win["y"], win["w"], win["h"]
+
+    cols = 8
+    rows = 6
+
+    frag_w = w // cols
+    frag_h = h // rows
+
+    for i in range(cols):
+        for j in range(rows):
+            fx = x + i * frag_w
+            fy = y + j * frag_h
+
+            self.fragments.append({
+                "x": fx,
+                "y": fy,
+                "w": frag_w,
+                "h": frag_h,
+                "vx": random.uniform(-3, 3),
+                "vy": random.uniform(-8, -2),
+                "rot": random.uniform(-5, 5),
+            })
 
 
 def move_window(win_id, x, y, w, h):
@@ -129,7 +152,7 @@ def kill_window(win_data):
         pid = pid_atom.value[0]
         p = psutil.Process(pid)
 
-        print(f"💀 Eating {p.name()} (PID {pid})")
+        print(f"Eating {p.name()} (PID {pid})")
         p.terminate()
 
     except Exception as e:
@@ -152,6 +175,8 @@ class Creature(QWidget):
         )
 
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
+
+        self.fragments = []
 
         self.screen = QApplication.primaryScreen().geometry()
         self.resize(self.screen.width(), self.screen.height())
@@ -325,7 +350,22 @@ class Creature(QWidget):
             # SMASH (very close)
             if dist < 60:
                 print(f" SMASH {self.target['title']}")
+                self.shatter_window(self.target)
 
+
+                # update fragments
+                for f in self.fragments:
+                    f["x"] += f["vx"]
+                    f["y"] += f["vy"]
+                    f["vy"] += 0.4  # gravity
+                
+                # remove off-screen fragments
+                self.fragments = [
+                    f for f in self.fragments
+                    if f["y"] < self.screen.height() + 200
+                ]
+
+                
                 if self.args.auto:
                     kill_window(self.target)
                 else:
