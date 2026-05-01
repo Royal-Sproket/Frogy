@@ -5,7 +5,7 @@ set -e
 echo "Installing Desktop Frog..."
 
 # ----------------------------
-# CONFIG (CHANGE THIS)
+# CONFIG
 # ----------------------------
 REPO_URL="https://github.com/Royal-Sproket/Frogy.git"
 INSTALL_DIR="$HOME/.desktop-frog"
@@ -35,6 +35,7 @@ pip install PyQt6 python-xlib psutil
 
 # optional but recommended
 sudo apt install -y wmctrl libxcb-cursor0
+sudo apt install x11-utils imagemagick
 
 deactivate
 
