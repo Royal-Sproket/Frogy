@@ -7,7 +7,7 @@ echo "Installing Desktop Frog..."
 # ----------------------------
 # CONFIG (CHANGE THIS)
 # ----------------------------
-REPO_URL="https://github.com/YOUR_USERNAME/YOUR_REPO.git"
+REPO_URL="https://github.com/Royal-Sproket/Frogy.git"
 INSTALL_DIR="$HOME/.desktop-frog"
 VENV_DIR="$INSTALL_DIR/venv"
 
@@ -48,7 +48,7 @@ LAUNCHER="$INSTALL_DIR/run.sh"
 cat > "$LAUNCHER" <<EOF
 #!/usr/bin/env bash
 source "$VENV_DIR/bin/activate"
-python3 "$INSTALL_DIR/yumyum.py" "\$@"
+python3 "$INSTALL_DIR/frogy.py" "\$@"
 EOF
 
 chmod +x "$LAUNCHER"
